@@ -1,8 +1,9 @@
 package com.pwojcik;
 
 import com.pwojcik.menu.Menu;
-import com.pwojcik.menu.MenuFactory;
+import com.pwojcik.menu.MenuOperator;
 
+import com.pwojcik.menu.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,57 +15,20 @@ class Game {
 
     public void start() {
 
-        MenuFactory menuFactory = new MenuFactory();
-        menuFactory.initializeMenu();
+        MenuOperator menuOperator = new MenuOperator();
 
-        Menu menu = menuFactory.getMenuList().get(0);
+        Menu menu = menuOperator.getMenuList().get(0);
 
-        boolean running = true;
-        while (running) {
+        while (menu != null) {
 
             menu.display();
 
-            // TODO Change switch for something better (this solution is temporary)
-            switch (getOption(menu)) {
-                case 1:
-                    System.out.println(menu.getOptions().get(0).getDescription());
-                    System.out.println("Starting game... Please prepare...");
-                    break;
-                case 2:
-                    System.out.println(menu.getOptions().get(1).getDescription());
-                    menu = menuFactory.getMenuList().get(1);
-                    menu.display();
-                    while (running) {
-                        switch (getOption(menu)) {
-                            case 1:
-                                System.out.println(menu.getOptions().get(0).getDescription());
-                                break;
-                            case 2:
-                                System.out.println(menu.getOptions().get(1).getDescription());
-                                break;
-                            case 3:
-                                System.out.println(menu.getOptions().get(2).getDescription());
-                                menu = menuFactory.getMenuList().get(0);
-                                running = false;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    running = true;
-                    break;
-                case 3:
-                    System.out.println(menu.getOptions().get(2).getDescription());
-                    System.out.println("Java Developer: Paulina Wojcik");
-                    break;
-                case 4:
-                    System.out.println(menu.getOptions().get(3).getDescription());
-                    running = false;
-                    break;
-                default:
-                    break;
-            }
+            int optionId = getOption(menu) - 1;
+            Option option = menu.getOptions().get(optionId);
+            menu = option.getAction().apply(option.getDescription());
+
         }
+
     }
 
     private int getOption(Menu menu) {

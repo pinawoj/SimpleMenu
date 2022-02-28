@@ -1,14 +1,25 @@
 package com.pwojcik.menu;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 
 public class Menu {
 
-    private Integer id;
+    private static final Logger LOGGER = LoggerFactory.getLogger(Menu.class);
+
     private String name;
     private List<Option> options;
 
+    public Menu(String name, List<Option> options) {
+
+        LOGGER.info("Creating menu: {}", name);
+
+        this.name = name;
+        this.options = options;
+    }
 
     public void display() {
 
@@ -20,14 +31,6 @@ public class Menu {
         }
 
         System.out.println("\n Choose option: ");
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -49,8 +52,7 @@ public class Menu {
     @Override
     public String toString() {
         return "Menu{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", options=" + options +
                 '}';
     }
