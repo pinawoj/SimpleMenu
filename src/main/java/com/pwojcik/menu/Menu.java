@@ -1,59 +1,36 @@
 package com.pwojcik.menu;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
+public abstract class Menu {
 
-public class Menu {
+    protected List<Option> options = new ArrayList<>();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Menu.class);
-
-    private String name;
-    private List<Option> options;
-
-    public Menu(String name, List<Option> options) {
-
-        LOGGER.info("Creating menu: {}", name);
-
-        this.name = name;
-        this.options = options;
+    protected Menu() {
+        createOptions();
     }
 
-    public void display() {
+    protected abstract void createOptions();
 
-        System.out.println("[  " + this.name.toUpperCase() + "  ]");
+    public final Menu runOption(int optionId) {
+        Option option = options.get(optionId);
+        return option.getAction().apply(option.getDescription());
+    }
+
+    public final void display() {
+        System.out.println("\n[  " + this.getClass().getSimpleName() + "  ]");
         System.out.println("===============");
-
         for (Option option : this.options) {
             System.out.println(option.getId() + ". " + option.getDescription());
         }
-
-        System.out.println("\n Choose option: ");
+        System.out.println("===============");
+        System.out.println("Choose option: ");
     }
 
-    public String getName() {
-        return name;
+    public final List<Option> getOptions() {
+        return this.options;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Option> getOptions() {
-        return options;
-    }
-
-    public void setOptions(List<Option> options) {
-        this.options = options;
-    }
-
-    @Override
-    public String toString() {
-        return "Menu{" +
-                "name='" + name + '\'' +
-                ", options=" + options +
-                '}';
-    }
 }

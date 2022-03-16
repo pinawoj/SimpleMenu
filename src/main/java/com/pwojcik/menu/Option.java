@@ -11,7 +11,7 @@ public class Option {
 
     private Integer id;
     private String description;
-    private transient Function<String, Menu> action;
+    private Function<String, Menu> action;
 
 
     public Option(Integer id, String description, Function<String, Menu> action) {
